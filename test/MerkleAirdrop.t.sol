@@ -23,13 +23,12 @@ contract MerkleAirdropTest is ZkSyncChainChecker, Test {
     uint256 userPrivKey;
 
     function setUp() public {
-        if(!isZkSyncChain()) {
+        if (!isZkSyncChain()) {
             DeployMerkleAirdrop deployer = new DeployMerkleAirdrop();
             (airdrop, token) = deployer.deployMerkleAirdrop();
-        }
-        else {
+        } else {
             token = new BagelToken();
-            airdrop = new MerkleAirdrop(ROOT,token);
+            airdrop = new MerkleAirdrop(ROOT, token);
             token.mint(token.owner(), AMOUNT_TO_SEND);
             token.transfer(address(airdrop), AMOUNT_TO_SEND);
         }

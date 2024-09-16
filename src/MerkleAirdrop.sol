@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import { IERC20, SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import { EIP712 } from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
-import { SignatureChecker } from "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
-import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+import {SignatureChecker} from "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 /**
  * @title Merkle Airdrop - Airdrop tokens to users who can prove they are in a merkle tree
@@ -46,14 +46,7 @@ contract MerkleAirdrop is EIP712 {
     }
 
     // claim the airdrop using a signature from the account owner
-    function claim(
-        address account,
-        uint256 amount,
-        bytes32[] calldata merkleProof,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-    )
+    function claim(address account, uint256 amount, bytes32[] calldata merkleProof, uint8 v, bytes32 r, bytes32 s)
         external
     {
         if (s_hasClaimed[account]) {
@@ -81,9 +74,8 @@ contract MerkleAirdrop is EIP712 {
 
     // message we expect to have been signed
     function getMessageHash(address account, uint256 amount) public view returns (bytes32) {
-        return _hashTypedDataV4(
-            keccak256(abi.encode(MESSAGE_TYPEHASH, AirdropClaim({ account: account, amount: amount })))
-        );
+        return
+            _hashTypedDataV4(keccak256(abi.encode(MESSAGE_TYPEHASH, AirdropClaim({account: account, amount: amount}))));
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -102,13 +94,7 @@ contract MerkleAirdrop is EIP712 {
     //////////////////////////////////////////////////////////////*/
 
     // verify whether the recovered signer is the expected signer/the account to airdrop tokens for
-    function _isValidSignature(
-        address signer,
-        bytes32 digest,
-        uint8 _v,
-        bytes32 _r,
-        bytes32 _s
-    )
+    function _isValidSignature(address signer, bytes32 digest, uint8 _v, bytes32 _r, bytes32 _s)
         internal
         pure
         returns (bool)
